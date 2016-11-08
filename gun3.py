@@ -24,11 +24,11 @@ class ball():
         self.x = x
         self.y = y
         self.r = 10
-        self.vx = 0
-        self.vy = 0
+        self.vx = 5
+        self.vy = 3
         self.color = choice(['blue','green','red','brown'])
         self.id = canv.create_oval(self.x-self.r, self.y-self.r, self.x+self.r, self.y+self.r, fill=self.color)
-        self.live = 5
+        self.live = 30
 
     def set_coords(self):
         canv.coords(self.id, self.x-self.r, self.y-self.r, self.x+self.r, self.y+self.r)
@@ -39,7 +39,8 @@ class ball():
             и стен по краям окна (размер окна 800х600).
         """
         self.x += self.vx
-        if self.x <= 0 and self.vx <=0:
+        self.vx-=3
+        if self.x <= 0 and self.vx <= 0:
             self.vx = -0.5*self.vx
         elif self.x >=780 and self.vx>=0:
             self.vx = -0.5*self.vx
@@ -124,6 +125,7 @@ class target():
         y = self.y = rnd(300,550)
         r = self.r = rnd(2,50)
         vy = self.vy = rnd(1,10)
+        vx = self.vx = rnd(5,15)
         color = self.color = 'red'
         canv.coords(self.id, x-r,y-r,x+r,y+r)
         canv.itemconfig(self.id, fill = color)
@@ -137,10 +139,13 @@ class target():
     def set_coords(self):
         canv.coords(self.id, self.x-self.r, self.y-self.r, self.x+self.r, self.y+self.r)
 
-    def move(self):
+    def targetmove(self):
         self.y -= self.vy
+        self.x+=self.vx
         if self.y <= 0 or self.y >= 600:
             self.vy = -self.vy
+        if self.x<= 0 +self.r  or  self.x>=800-self.r:
+            self.vx=-self.vx
         self.set_coords()
 
 
@@ -168,9 +173,9 @@ def new_game(event=''):
     t2.live = 1
     while (t1.live or t2.live) or balls:
         if t1.live:
-            t1.move()
+            t1.targetmove()
         if t2.live:
-            t2.move()
+            t2.targetmove()
         for b in balls:
             b.move()
             if b.hittest(t1) and t1.live:

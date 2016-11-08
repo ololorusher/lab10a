@@ -39,6 +39,7 @@ class ball():
             и стен по краям окна (размер окна 800х600).
         """
         self.x += self.vx
+        self.vx-=3
         if self.x <= 0 and self.vx <=0:
             self.vx = -0.5*self.vx
         elif self.x >=780 and self.vx>=0:
@@ -122,8 +123,8 @@ class target():
         """ Инициализация новой цели. """
         x = self.x = rnd(600,780)
         y = self.y = rnd(300,550)
-        r = self.r = rnd(2,50)
-        color = self.color = 'red'
+        r = self.r = rnd(20, 70)
+        color = self.color = 'violet'
         canv.coords(self.id, x-r,y-r,x+r,y+r)
         canv.itemconfig(self.id, fill = color)
 
